@@ -27,10 +27,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         if request.method == "GET":
             profile = Profile.objects.get(id=kwargs["pk"])
+            projects = Project.objects.filter(profile=profile)
+            certificates = Certificate.objects.filter(profiles=profile)
             context = {
                 "profile": profile,
-                "projects": profile.projects.all(),
-                "certificates": profile.certificates.all(),
+                "projects": projects,
+                "certificates": certificates,
             }
             return render(request, "profile_detail.html", context)
 
